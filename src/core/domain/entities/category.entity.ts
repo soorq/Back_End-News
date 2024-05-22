@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { EPost } from './post.entity';
 
 @Entity('category')
@@ -19,10 +13,9 @@ export class ECategory {
   declare value: string;
 
   @ManyToMany(() => EPost, (post) => post.category, {
-    onDelete: 'CASCADE',
+    onDelete: 'NO ACTION',
     onUpdate: 'NO ACTION',
     nullable: true,
   })
-  @JoinColumn({ name: 'post_ids' })
-  declare post?: EPost[];
+  declare post: EPost[];
 }

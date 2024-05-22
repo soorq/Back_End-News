@@ -1,3 +1,6 @@
+import { CategoryService } from './category.service';
+import { ECategory } from '@/core/domain/entities';
+import { CreateCategoryDto } from '@/shared/crud';
 import {
   Body,
   Controller,
@@ -14,9 +17,6 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CategoryService } from './category.service';
-import { ECategory } from '@/core/domain/entities/category.entity';
-import { CreateCategoryDto } from '@/shared/crud/category/create-category.dto';
 
 @Controller('category')
 @ApiTags('Categories')
@@ -32,6 +32,11 @@ export class CategoryController {
     type: ECategory,
     description: 'Отдает сущность созданную по бд',
   })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: ECategory,
+    description: 'Плохой запроос или ошибка при создании',
+  })
   @Post()
   async create(@Body() dto: CreateCategoryDto) {
     try {
@@ -46,6 +51,11 @@ export class CategoryController {
     description: 'Получение всех категорий',
   })
   @ApiOkResponse({ status: HttpStatus.OK, type: ECategory, isArray: true })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: ECategory,
+    description: 'Плохой запроос или не найдены данные',
+  })
   @Get('all')
   async getAll() {
     try {
@@ -60,6 +70,11 @@ export class CategoryController {
     description: 'Получение по индефикатору',
   })
   @ApiOkResponse({ status: HttpStatus.OK, type: ECategory, isArray: true })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: ECategory,
+    description: 'Плохой запроос или айди не найден',
+  })
   @Get('getBy/:id')
   async getOne(@Param('id') id: string) {
     try {

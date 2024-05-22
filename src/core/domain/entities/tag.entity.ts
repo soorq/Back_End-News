@@ -7,16 +7,16 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-@Entity('tags')
+@Entity('tag')
 export class ETag {
-  @PrimaryGeneratedColumn({ name: 'tags_ids' })
+  @PrimaryGeneratedColumn({ name: 'tag_id' })
   declare id: string;
 
   @Column({ type: 'varchar', nullable: false })
   declare label: string;
 
   @ManyToMany(() => EPost, (post) => post.tags, {
-    onDelete: 'CASCADE',
+    onDelete: 'NO ACTION',
     onUpdate: 'NO ACTION',
     nullable: true,
   })

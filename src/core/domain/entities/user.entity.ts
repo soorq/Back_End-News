@@ -48,12 +48,13 @@ export class EUser {
   })
   declare email: string;
 
-  @OneToOne(() => EToken, (token) => token.user, { nullable: true })
+  @OneToOne(() => EToken, (token) => token.user, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'token_ids' })
   token: EToken;
 
   @OneToMany(() => EPost, (post) => post.user, { nullable: true })
-  @JoinColumn({ name: 'category_ids' })
   declare posts: EPost[];
 
   @Column({

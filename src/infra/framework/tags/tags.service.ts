@@ -1,9 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ETag } from '@/core/domain/entities/tag.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ETag } from '@/core/domain/entities';
 import { UpdateTagDto } from '@/shared/crud';
 import { Repository } from 'typeorm';
 
+/**
+ * TagsService class responsible for managing tags.
+ * Methods: create, findOne, update, findAll, delete, findByLabel.
+ * create - Creates a new token for a user.
+ * findAll - Finds all tags in DB.
+ * findOne - Finds a token by user ID.
+ * update - Updates a token with new data.
+ * findByLabel - Finds a all tags.
+ * delete - Deletes a token by ID.
+ */
 @Injectable()
 export class TagsService {
   constructor(

@@ -1,15 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { EToken } from '@/core/domain/entities/token.entity';
-import type { EUser } from '@/core/domain/entities/user.entity';
+import { type EUser, EToken } from '@/core/domain/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateTokenDto } from '@/shared/crud';
 import { ConfigService } from '@nestjs/config';
 import type { ITokens } from '@/shared/types';
-import { Role } from '@/shared/roles';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '@/shared/roles';
 import { Repository } from 'typeorm';
-// import * as argon2 from 'argon2';
 
+/**
+ * TokenService class responsible for managing tokens.
+ * Methods: create, findBy, update, updateTokens, delete.
+ * create - Creates a new token for a user.
+ * findBy - Finds a token by user ID.
+ * update - Updates a token with new data.
+ * updateTokens - Updates access and refresh tokens for a user.
+ * delete - Deletes a token by ID.
+ */
 @Injectable()
 export class TokenService {
   constructor(
@@ -58,7 +65,10 @@ export class TokenService {
 
   findBy = async (id: string) => {
     try {
-      return this.db.findOneBy({ user: { id } });
+      return this.db.findOne({
+        where: { user: { id } },
+        relations: { user: true },
+      });
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }
@@ -76,6 +86,34 @@ export class TokenService {
       }
 
       return this.db.update(token.id, dto);
+    } catch (error) {
+      throw new HttpException(error.response, error.status);
+    }
+  };
+
+  updateTokens = async (user: EUser) => {
+    try {
+      const token = await this.db.findOneBy({ user: { id: user.id } });
+
+      if (!token) {
+        throw new HttpException(
+          'Такой сессии не существует!',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const { __v_AC_T, __v_RT_T } = await this.getTokens(
+        user.id,
+        user.role,
+        user.email,
+      );
+
+      await this.db.update(token.id, {
+        access: __v_AC_T,
+        refresh: __v_RT_T,
+      });
+
+      return token;
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

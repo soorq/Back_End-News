@@ -1,5 +1,5 @@
-import { ETag } from '@/core/domain/entities/tag.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ETag } from '@/core/domain/entities';
 import { TagsService } from './tags.service';
 import { Module } from '@nestjs/common';
 

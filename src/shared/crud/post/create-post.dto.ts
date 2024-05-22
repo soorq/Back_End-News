@@ -80,5 +80,5 @@ export class CreatePostDto {
     type: String,
   })
   @Type(() => String)
-  tags_values: string[];
+  tags_ids: string[];
 }

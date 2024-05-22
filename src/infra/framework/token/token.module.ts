@@ -1,4 +1,4 @@
-import { EToken } from '@/core/domain/entities/token.entity';
+import { EToken } from '@/core/domain/entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { TokenService } from './token.service';

@@ -1,7 +1,7 @@
 import { EPost } from '@/core/domain/entities/post.entity';
 import { EToken } from '@/core/domain/entities/token.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -81,6 +81,7 @@ export class CreateUserDto {
     type: String,
   })
   @IsString()
+  @MinLength(8)
   password: string;
 
   @ApiProperty({
@@ -100,7 +101,6 @@ export class CreateUserDto {
     nullable: false,
     maxLength: 255,
     minLength: 10,
-    example: '',
     required: false,
     type: String,
   })

@@ -1,10 +1,18 @@
-import { CreateCategoryDto } from '@/shared/crud/category/create-category.dto';
-import { UpdateCategoryDto } from '@/shared/crud/category/update-category.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ECategory } from '@/core/domain/entities/category.entity';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { CreateCategoryDto, UpdateCategoryDto } from '@/shared/crud';
 import type { DataSource, Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { ECategory } from '@/core/domain/entities';
 
+/**
+ * Class representing a Category Service.
+ * Methods: create, findAll, findOne, update, delete.
+ * create - Creates a new category if it doesn't exist.
+ * findAll - Retrieves all categories.
+ * findOne - Retrieves a specific category by ID.
+ * update - Updates a category by ID.
+ * delete - Deletes a category by ID.
+ */
 @Injectable()
 export class CategoryService {
   private categoryDb: Repository<ECategory>;

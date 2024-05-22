@@ -5,6 +5,16 @@ import { EUser } from '@/core/domain/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+/**
+ * Class representing a UserService.
+ * This class provides methods for user management such as creating, finding, updating, and deleting users.
+ * - create: Creates a new user if the email is unique.
+ * - findAll: Retrieves all users from the database.
+ * - findOne: Finds a user by their ID.
+ * - update: Updates a user's information by ID.
+ * - delete: Deletes a user by ID.
+ * - findByEmail: Finds a user by their email address.
+ */
 @Injectable()
 export class UserService {
   constructor(
@@ -21,7 +31,9 @@ export class UserService {
       }
 
       const user = await this.db.create(dto);
+
       const data = await this.db.save(user);
+
       return { message: 'Создан', status: 201, data };
     } catch (error) {
       throw new HttpException(error.message, error.status);

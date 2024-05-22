@@ -13,7 +13,6 @@ export class EToken {
   declare id: string;
 
   @OneToOne(() => EUser, (user) => user.token, {
-    onDelete: 'CASCADE',
     nullable: true,
   })
   @JoinColumn({ name: 'user_id' })

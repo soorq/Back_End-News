@@ -1,7 +1,7 @@
 import { CreatePostDto } from '@/shared/crud/post/create-post.dto';
 import { UpdatePostDto } from '@/shared/crud/post/update-post.dto';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { EPost } from '@/core/domain/entities/post.entity';
+import { EPost } from '@/core/domain/entities';
 import { ACGuard } from 'nest-access-control';
 import { PostService } from './post.service';
 import {
@@ -41,6 +41,11 @@ export class PostController {
     type: EPost,
     description: 'Отдает сущность созданную по бд',
   })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EPost,
+    description: 'Плохой запроос или не прошло создание за ряд причин',
+  })
   @UseGuards(ACGuard)
   @Post()
   create(@GetCurUserId() id: string, @Body() dto: CreatePostDto) {
@@ -56,6 +61,11 @@ export class PostController {
     description: 'Для получения всех постов',
   })
   @ApiOkResponse({ status: HttpStatus.OK, type: EPost, isArray: true })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EPost,
+    description: 'Плохой запроос или не найдены данные',
+  })
   @UseGuards(ACGuard)
   @Get('all')
   async getAll() {
@@ -71,6 +81,11 @@ export class PostController {
     description: 'Получение одного поста по айди',
   })
   @ApiOkResponse({ status: HttpStatus.OK, type: EPost, isArray: true })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EPost,
+    description: 'Плохой запроос или айди не найден',
+  })
   @UseGuards(ACGuard)
   @Get('getBy/:id')
   async getOne(@Param('id') id: string) {
@@ -88,6 +103,11 @@ export class PostController {
   @ApiOkResponse({
     status: HttpStatus.OK,
     description: 'Отдает филтрованные посты по бд',
+  })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EPost,
+    description: 'Плохой запроос или айди не найден',
   })
   @UseGuards(ACGuard)
   @Get('filters')
@@ -115,6 +135,11 @@ export class PostController {
     status: HttpStatus.CREATED,
     type: EPost,
     description: 'Обновляет сущность созданную по бд',
+  })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EPost,
+    description: 'Плохой запроос или айди не найден',
   })
   @UseGuards(ACGuard)
   @Patch('/:id')

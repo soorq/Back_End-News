@@ -1,6 +1,6 @@
-import { CreateUserDto } from '@/shared/crud/user/create-user.dto';
-import { EUser } from '@/core/domain/entities/user.entity';
+import { EUser } from '@/core/domain/entities';
 import { ACGuard } from 'nest-access-control';
+import { CreateUserDto } from '@/shared/crud';
 import { UserService } from './user.service';
 import {
   ApiBadRequestResponse,
@@ -34,6 +34,11 @@ export class UserController {
     type: EUser,
     description: 'Отдает сущность созданную по бд',
   })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EUser,
+    description: 'Плохой запроос или не создалась сущность',
+  })
   @UseGuards(ACGuard)
   @Post()
   async create(@Body() dto: CreateUserDto) {
@@ -49,6 +54,11 @@ export class UserController {
     description: 'Получение всех категорий',
   })
   @ApiOkResponse({ status: HttpStatus.OK, type: EUser, isArray: true })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EUser,
+    description: 'Плохой запроос или не найдены данные',
+  })
   @UseGuards(ACGuard)
   @Get('all')
   async getAll() {
@@ -64,6 +74,11 @@ export class UserController {
     description: 'Получение по индефикатору',
   })
   @ApiOkResponse({ status: HttpStatus.OK, type: EUser, isArray: true })
+  @ApiBadRequestResponse({
+    status: HttpStatus.BAD_REQUEST,
+    type: EUser,
+    description: 'Плохой запроос или айди не найден',
+  })
   @UseGuards(ACGuard)
   @Get('getBy/:id')
   async getOne(@Param('id') id: string) {
