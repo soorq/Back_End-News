@@ -1,65 +1,115 @@
-# Test Task
-
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-## Start project
+<p align="center">
+  <h1 align="center">Test Instance Posts blog v0.0.1</h1>
+</p>
 
-### The first
+- NestJS(^10.0.0) + Node(^20.3.1).
+- DDD - pattern project with SOLID.
+- CRUD/TypeOrm/Pg
+- Docker container.
+
+---
+
+# Env
+
+Чтобы проект встал и не ругался на ошибки - скопируйте .env.example со своими данными
+
+---
+
+# :smile: Запуск
+
+- Для настройки конфигов (1)
+- Для запуска дев мода (2)
+- Для прода (3)
+
+### (1) Настройка конфигов
+
+#### The first
 
 - need to clone this repo to u pc (git clone https://github.com/soorq/Back_End-News.git)
 
-### The second
+#### The second
 
 - is setup u db, get a conf (If u havent a db, u cant to start this app)
 
-### The third
+#### The third
 
 - is need setup .env file \*(create .env and copy a values from .env.example)
 
-### The four step
+#### The four step
 
 - is need add a packages \*(node_modules)
 
-<div  >
+### (2) Для запуска дев мода
+
+| npm               | yarn           | pnpm           |
+| ----------------- | -------------- | -------------- |
+| npm run start:dev | yarn start:dev | pnpm start:dev |
+
+### (3) Для прода
+
+| Пункты | npm           | yarn       | pnpm       |
+| ------ | ------------- | ---------- | ---------- |
+| 1      | npm run build | yarn build | pnpm build |
+| 2      | npm run start | yarn start | pnpm start |
+
+- [x] Обязательно завести .env , далее под пункт Env взять все енвайромент и подставить
+
+> После установки - обращаться по этой ссылки [http://localhost:${U_PORT || 1010}/api](http://localhost:1010/api)
+
+> Чтоб зайти в сваггер документацию перейти по ссылки - [http://localhost:${U_PORT || 1010}/ui](http://localhost:1010/ui)
+
+# Docker. Как запустить?
+
+---
+
+### Для начала понимать зачем тут докер?
+
+- <b>Ответ</b>: Для развертки с тестами в ci in GitLab. Также очень удобная работа, когда не нужно по 101 разу писать и лезть в консоль, чтоб в дев режиме писать. Запустил контейнер - радуйся, работай
+
+---
+
+Сам процесс:
+
+- Через сам Dockerfile
+
+### Создание контейнера, волумов и скачка образов
+
+> Run Docker Build Command
 
 ```bash
-  $ npm install
+docker build -t sanatera --build-arg NEXT_PUBLIC_APP_URL=localhost:3000 --build-arg NEXT_PUBLIC_API_URL=https://onshorkin.com/i8fd90sd/v09cxvjksdf/xzs9/sda9 .
 ```
 
-```bash
-  $ yarn install
+---
+
+### Запуск нашего контейнера
+
+> docker-compose up
+
+#### В нем уже настроены ваши контейнеры и образ приложения,
+
+- postgres
+- pgadmin ./\. запускается после успешного запуска контейнера postgres
+- main ./\. запускается после успешного запуска контейнера postgres
+
+> Обязательно! В docker-compose.yml в контейнере - main, показать зависимости, enviroment - u ПЕРЕИМЕНУЙТЕ docker-compose.example.yml -> docker-compose.yml
+
+```dockerfile
+FROM node:20
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm cache clean --force && yarn --force
+
+COPY . .
+
+RUN yarn build
+
+CMD ["npm", "run", "start" , ":", "dev"]
 ```
-
-```bash
-  $ pnpm install
-```
-
-</div>
-
-### The fife
-
-- is need to start u app with command:
-
-```bash
-  $ npm start:dev
-```
-
-```bash
-  $ yarn start:dev
-```
-
-```bash
-  $ pnpm start:dev
-```
-
-## Path to app
-
-### App
-
-After installation and all configuration - u will need go to u browser and insert from search url [http://localhost:${U_PORT || 1010}/api](http://localhost:1010/api)
-
-### Swagger documentation is path ->
-
-He is decided path - [http://localhost:${U_PORT || 1010}/ui](http://localhost:1010/ui)
