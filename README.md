@@ -64,29 +64,10 @@
 
 # Docker. Как запустить?
 
----
-
-### Для начала понимать зачем тут докер?
-
-- <b>Ответ</b>: Для развертки с тестами в ci in GitLab. Также очень удобная работа, когда не нужно по 101 разу писать и лезть в консоль, чтоб в дев режиме писать. Запустил контейнер - радуйся, работай
 
 ---
 
-Сам процесс:
-
-- Через сам Dockerfile
-
-### Создание контейнера, волумов и скачка образов
-
-> Run Docker Build Command
-
-```bash
-docker build -t sanatera --build-arg NEXT_PUBLIC_APP_URL=localhost:3000 --build-arg NEXT_PUBLIC_API_URL=https://onshorkin.com/i8fd90sd/v09cxvjksdf/xzs9/sda9 .
-```
-
----
-
-### Запуск нашего контейнера
+### Запуск Docker
 
 > docker-compose up
 
