@@ -21,10 +21,9 @@ export class AuthController {
   @Public()
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body() dto: CreateUserDto) {
+  signup(@Body() dto: CreateUserDto) {
     try {
-      const a = await this.auth.signup(dto);
-      return a;
+      return this.auth.signup(dto);
     } catch (error) {
       throw new HttpException(error.response, error.status);
     }

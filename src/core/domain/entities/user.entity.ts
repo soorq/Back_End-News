@@ -1,19 +1,11 @@
-import {
-  Column,
-  Entity,
-  OneToOne,
-  OneToMany,
-  JoinColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { EPost } from './post.entity';
-import { EToken } from './token.entity';
 import { Role } from '@/shared/roles';
 
 @Entity('user')
 export class EUser {
   @PrimaryGeneratedColumn({ name: 'user_id' })
-  id: string;
+  declare id: string;
 
   @Column({ type: 'varchar', array: false, nullable: false, length: 255 })
   declare first_name: string;
@@ -47,12 +39,6 @@ export class EUser {
     unique: true,
   })
   declare email: string;
-
-  @OneToOne(() => EToken, (token) => token.user, {
-    nullable: true,
-  })
-  @JoinColumn({ name: 'token_ids' })
-  token: EToken;
 
   @OneToMany(() => EPost, (post) => post.user, { nullable: true })
   declare posts: EPost[];

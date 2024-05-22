@@ -25,7 +25,6 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { GetCurUserId } from '@/core/domain/decorator';
 
 @Controller('post')
 @ApiTags('Posts')
@@ -48,9 +47,9 @@ export class PostController {
   })
   @UseGuards(ACGuard)
   @Post()
-  create(@GetCurUserId() id: string, @Body() dto: CreatePostDto) {
+  create(@Body() dto: CreatePostDto) {
     try {
-      return this.service.create(id, dto);
+      return this.service.create(dto);
     } catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }

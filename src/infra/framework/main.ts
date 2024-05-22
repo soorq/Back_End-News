@@ -123,7 +123,6 @@ async function bootstrap() {
           'Bootstrap',
         );
   } catch (error) {
-    console.log(error);
     Logger.error(`❌  Error starting server, ${error}`, '', 'Bootstrap', false);
     process.exit();
   }

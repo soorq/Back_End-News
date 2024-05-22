@@ -14,6 +14,19 @@ export class CreatePostDto {
     type: String,
   })
   @IsString()
+  userId: string;
+
+  @ApiProperty({
+    name: 'title',
+    nullable: false,
+    maxLength: 255,
+    minLength: 10,
+    example: 'Название пример',
+    description: 'Обязательное поле',
+    required: true,
+    type: String,
+  })
+  @IsString()
   title: string;
 
   @ApiProperty({

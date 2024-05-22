@@ -50,20 +50,20 @@ export class PostService {
     this.postDb = this._ds.getRepository(EPost);
   }
 
-  create = async (id: string, dto: CreatePostDto) => {
+  create = async (dto: CreatePostDto) => {
     const queryRunner = this._ds.createQueryRunner();
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
-      const isExist = await this.findByUser(id, dto.link);
+      const isExist = await this.findByUser(dto.userId, dto.link);
 
       if (isExist) {
         throw new HttpException('Уже есть такой пост', HttpStatus.BAD_REQUEST);
       }
 
-      const user = (await this.user.findOne(id)).data;
+      const user = (await this.user.findOne(dto.userId)).data;
 
       const category = await this.category.findAll();
       const c = await category.data.filter((item) =>
@@ -160,7 +160,18 @@ export class PostService {
 
   findOne = async (id: string) => {
     try {
-      const res = await this.postDb.findOneBy({ id });
+      const res = await this.postDb.findOne({
+        where: { id },
+        select: {
+          user: {
+            id: true,
+            role: true,
+            img: true,
+            email: true,
+          },
+        },
+        relations: { category: true, tags: true, user: true },
+      });
 
       if (!res) {
         throw new HttpException('Ничего не найдено', HttpStatus.NOT_FOUND);
@@ -177,12 +188,23 @@ export class PostService {
       /**
        * Creates a query builder instance for the 'q' alias using the postDb repository.
        */
-      const qb = this.postDb.createQueryBuilder('q');
-
-      /**
-       * Orders the query builder instance 'qb' by the 'createdAt' field in descending order.
-       */
-      qb.orderBy('q.createdAt', 'DESC');
+      const qb = this.postDb
+        .createQueryBuilder('q')
+        .leftJoin('q.user', 'user')
+        .addSelect([
+          'user.id',
+          'user.first_name',
+          'user.last_name',
+          'user.img',
+          'user.age',
+          'user.role',
+          'user.email',
+          'user.createdAt',
+          'user.updatedAt',
+        ])
+        .leftJoinAndSelect('q.tags', 'tags')
+        .leftJoinAndSelect('q.category', 'category')
+        .orderBy('q.createdAt', 'DESC');
 
       /**
        * Try to paginate the query builder with the provided options.

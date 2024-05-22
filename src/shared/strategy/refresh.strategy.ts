@@ -10,9 +10,6 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
   constructor(private readonly cfg: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      // jwtFromRequest: ExtractJwt.fromExtractors([
-      //   (request: Request) => request.cookies['__v_rt_t'],
-      // ]),
       secretOrKey: cfg.get<string>('JWT_REFRESH_SECRET'),
       passReqToCallback: true,
     });
@@ -20,7 +17,9 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
 
   validate(req: Request, payload: IJwtPayload) {
     const refreshToken = req.get('authorization').replace('Bearer', '').trim();
-    if (!refreshToken) throw new ForbiddenException('Не корректный токен');
+    if (!refreshToken) {
+      throw new ForbiddenException('Не корректный токен онбовления');
+    }
     return { ...payload, refreshToken };
   }
 }
